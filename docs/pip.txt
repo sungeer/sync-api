@@ -1,0 +1,28 @@
+﻿
+pip cache purge  # 清除缓存
+
+pip freeze > requirements.txt
+pip install -r requirements.txt
+
+
+
+# 升级
+python -m pip install --upgrade flask
+
+
+# 开发环境
+python -m pip install flask
+python -m pip install loguru httpx2 cryptography
+python -m pip install sqlalchemy PyMySQL
+python -m pip install python-dotenv
+python -m pip install jsonschema
+
+python -m pip install pytest
+
+
+# 生产环境
+python -m pip install gunicorn
+
+
+PYTHONUTF8=1
+
