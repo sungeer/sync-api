@@ -8,6 +8,7 @@ chdir = '/srv/waitress'
 pidfile = '/srv/run/waitress.pid'
 
 workers = 1
-worker_class = 'uvicorn_worker.UvicornWorker'  # pip install uvicorn-worker
+worker_class = 'gthread'   # 启用多线程
+threads = 100              # 单 worker 开启 100 线程
 
 errorlog = '/srv/logs/gunicorn.log'

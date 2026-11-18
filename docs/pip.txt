@@ -21,7 +21,7 @@ python -m pip install pytest
 
 
 # 生产环境
-python -m pip install gunicorn
+python -m pip install "gunicorn[gthread]"
 
 
 PYTHONUTF8=1
