@@ -1,12 +1,14 @@
 from json import JSONDecodeError
 
+from werkzeug.exceptions import BadRequest, UnsupportedMediaType
+
 from src.utils.exceptions import ParamError
 
 
 def require_body(request):
     try:
         data = request.get_json()
-    except JSONDecodeError:
+    except (JSONDecodeError, BadRequest, UnsupportedMediaType):
         raise ParamError('request body is not valid JSON')
     if not isinstance(data, dict):
         raise ParamError('request body must be a JSON object')
