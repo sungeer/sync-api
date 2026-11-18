@@ -1,5 +1,6 @@
 from flask import Flask
 
+from src.core.logger import setup_logger
 from src.core.db import db
 from src.core.http_client import http
 from src.utils.serial import JSONExtendProvider
@@ -13,6 +14,7 @@ def create_app():
 
     app.json.ensure_ascii = False
 
+    setup_logger()
     register_routes(app)
 
     db.init()
