@@ -1,4 +1,4 @@
-# waitress
+# sync-api
 
 *An api built with Starlette.*
 
@@ -6,8 +6,8 @@
 
 clone:
 ```
-$ git clone git@github.com:sungeer/waitress.git
-$ cd waitress
+$ git clone git@github.com:sungeer/sync-api.git
+$ cd sync-api
 ```
 create & activate virtual env then install dependency:
 
@@ -19,8 +19,8 @@ $ pip install -r requirements.txt
 ```
 then run:
 ```
-$ uvicorn waitress:app --port 8848
-* Running on http://127.0.0.1:8848/
+$ flask run
+* Running on http://127.0.0.1:5000/
 ```
 
 ## License

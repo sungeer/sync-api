@@ -13,7 +13,7 @@ class _ClientHolder:
         self._client = None
 
     def init(self):
-        self._client = httpx2.AsyncClient(
+        self._client = httpx2.Client(
             timeout=httpx2.Timeout(
                 connect=5.0,  # 连接阶段快速失败
                 read=30.0,  # 给服务端留足处理时间
