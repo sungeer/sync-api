@@ -9,7 +9,11 @@ from src.routes import register_routes
 
 
 def create_app():
-    app = Flask('hostess')
+    app = Flask(
+        __name__,
+        static_folder=None,
+        template_folder=None
+    )
 
     app.json = JSONExtendProvider(app)
 
