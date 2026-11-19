@@ -32,6 +32,10 @@ class _Engine:
     def connect(self):
         return self.get().connect()
 
+    def begin(self):
+        # 退出时提交，异常时回滚
+        return self.get().begin()
+
     def dispose(self):
         if self._engine is not None:
             self._engine.dispose()

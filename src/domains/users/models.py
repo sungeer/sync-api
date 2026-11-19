@@ -4,7 +4,8 @@ from sqlalchemy import text
 def query_one(conn, user_id: int) -> dict | None:
     sql = text('''
         SELECT
-            id, username, display_name, email
+            id, username, display_name, email,
+            created_at, last_login_at
         FROM
             users
         WHERE
@@ -17,30 +18,87 @@ def query_one(conn, user_id: int) -> dict | None:
 
     result = conn.execute(sql, params)
 
-    row = result.mappings().first()  # RowMapping | None
-    # row = result.mappings().one()  # 没有或多于一条都会抛异常
+    row = result.mappings().first()
 
     return dict(row) if row else None
 
 
-def query_many(conn, limit: int) -> list[dict]:
+def query_one_by_username(conn, username: str) -> dict | None:
     sql = text('''
         SELECT
-            id, username, display_name, email
+            id, username, display_name, email,
+            created_at, last_login_at
+        FROM
+            users
+        WHERE
+            username = :username
+    ''')
+
+    params = {
+        'username': username
+    }
+
+    result = conn.execute(sql, params)
+
+    row = result.mappings().first()
+
+    return dict(row) if row else None
+
+
+def query_one_by_email(conn, email: str) -> dict | None:
+    sql = text('''
+        SELECT
+            id, username, display_name, email,
+            created_at, last_login_at
+        FROM
+            users
+        WHERE
+            email = :email
+    ''')
+
+    params = {
+        'email': email
+    }
+
+    result = conn.execute(sql, params)
+
+    row = result.mappings().first()
+
+    return dict(row) if row else None
+
+
+def query_many(conn, limit: int, offset: int) -> list[dict]:
+    sql = text('''
+        SELECT
+            id, username, display_name, email,
+            created_at, last_login_at
         FROM
             users
         ORDER BY id
         LIMIT :limit
+        OFFSET :offset
     ''')
 
     params = {
-        'limit': limit
+        'limit': limit,
+        'offset': offset
     }
 
     result = conn.execute(sql, params)
-    rows = result.mappings().all()  # list[RowMapping]
+    rows = result.mappings().all()
 
     return [dict(r) for r in rows]
+
+
+def count_all(conn) -> int:
+    sql = text('''
+        SELECT
+            COUNT(*)
+        FROM
+            users
+    ''')
+
+    return conn.execute(sql).scalar_one()
 
 
 def insert_user(conn, username: str, display_name: str | None, email: str) -> int:
@@ -60,18 +118,21 @@ def insert_user(conn, username: str, display_name: str | None, email: str) -> in
     return result.lastrowid
 
 
-def update_display_name(conn, user_id: int, display_name: str) -> int:
+# 传 None 的字段保持原值，无法把字段改成 NULL
+def update_user(conn, user_id: int, display_name: str | None, email: str | None) -> int:
     sql = text('''
         UPDATE
             users
         SET
-            display_name = :display_name
+            display_name = COALESCE(:display_name, display_name),
+            email = COALESCE(:email, email)
         WHERE
             id = :id
     ''')
 
     params = {
         'display_name': display_name,
+        'email': email,
         'id': user_id
     }
 

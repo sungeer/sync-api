@@ -90,7 +90,7 @@ def register_errors(app):
         监控在这里感知
         """
         logger.exception(
-            'unhandled server error path={}',
+            'unhandled server error, path={}',
             request.path
         )
         return fail('internal server error', http_status=500)
