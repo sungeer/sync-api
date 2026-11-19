@@ -14,6 +14,7 @@ def create_app():
     app.json = JSONExtendProvider(app)
 
     app.json.ensure_ascii = False
+    app.json.sort_keys = False  # key 不按字母序重排
 
     setup_logger()
     register_errors(app)
